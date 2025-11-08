@@ -3183,12 +3183,21 @@ const onHBLoaded = function (cb) {
       };
       this.jb.push(a);
     }
-    Ie(a) {
-      let b = this;
-      setTimeout(function () {
-        b.qa.addIceCandidate(a);
-      }, this.Pe);
+Ie(a) {
+  let b = this;
+  setTimeout(async function () {
+    try {
+      if (!a || !a.candidate) return;
+      if (a.sdpMLineIndex == null) a.sdpMLineIndex = 0;
+      if (typeof a.sdpMLineIndex === "string") a.sdpMLineIndex = parseInt(a.sdpMLineIndex, 10);
+      if (a.sdpMid == null && a.sdpMLineIndex == null) {
+        return;
+      }
+      await b.qa.addIceCandidate(a);
+    } catch (err) {
     }
+  }, this.Pe);
+}
     dh() {
       this.Fd();
     }
